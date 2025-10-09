@@ -1,10 +1,9 @@
 import heapq
 from termcolor import colored
 
-# Class to represent the state of the 8-puzzle
 class PuzzleState:
     def __init__(self, board, parent, move, depth, cost):
-        self.board = board  # The puzzle board configuration
+        self.board = board 
         self.parent = parent  # Parent state
         self.move = move  # Move to reach this state
         self.depth = depth  # Depth in the search tree
@@ -13,7 +12,6 @@ class PuzzleState:
     def __lt__(self, other):
         return self.cost < other.cost
 
-# Function to display the board in a visually appealing format
 def print_board(board):
     print("+---+---+---+")
     for row in range(0, 9, 3):
@@ -29,15 +27,13 @@ def print_board(board):
 # Goal state for the puzzle
 goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
-# Possible moves for the blank tile (up, down, left, right)
 moves = {
-    'U': -3,  # Move up
-    'D': 3,   # Move down
-    'L': -1,  # Move left
-    'R': 1    # Move right
+    'U': -3,  
+    'D': 3,   
+    'L': -1,  
+    'R': 1   
 }
 
-# Function to calculate the heuristic (Manhattan distance)
 def heuristic(board):
     distance = 0
     for i in range(9):
@@ -47,14 +43,12 @@ def heuristic(board):
             distance += abs(x1 - x2) + abs(y1 - y2)
     return distance
 
-# Function to get the new state after a move
 def move_tile(board, move, blank_pos):
     new_board = board[:]
     new_blank_pos = blank_pos + moves[move]
     new_board[blank_pos], new_board[new_blank_pos] = new_board[new_blank_pos], new_board[blank_pos]
     return new_board
 
-# A* search algorithm
 def a_star(start_state):
     open_list = []
     closed_list = set()
@@ -71,13 +65,13 @@ def a_star(start_state):
         blank_pos = current_state.board.index(0)
 
         for move in moves:
-            if move == 'U' and blank_pos < 3:  # Invalid move up
+            if move == 'U' and blank_pos < 3: 
                 continue
-            if move == 'D' and blank_pos > 5:  # Invalid move down
+            if move == 'D' and blank_pos > 5:  
                 continue
-            if move == 'L' and blank_pos % 3 == 0:  # Invalid move left
+            if move == 'L' and blank_pos % 3 == 0:  
                 continue
-            if move == 'R' and blank_pos % 3 == 2:  # Invalid move right
+            if move == 'R' and blank_pos % 3 == 2: 
                 continue
 
             new_board = move_tile(current_state.board, move, blank_pos)
@@ -90,7 +84,6 @@ def a_star(start_state):
 
     return None
 
-# Function to print the solution path
 def print_solution(solution):
     path = []
     current = solution
@@ -102,14 +95,10 @@ def print_solution(solution):
     for step in path:
         print(f"Move: {step.move}")
         print_board(step.board)
-
-# Initial state of the puzzle
 initial_state = [1, 2, 3, 0, 4, 6, 7, 5, 8]
 
-# Solve the puzzle using A* algorithm
 solution = a_star(initial_state)
 
-# Print the solution
 if solution:
     print(colored("Solution found:", "green"))
     print_solution(solution)
