@@ -1,0 +1,17 @@
+from groq import Groq
+
+# Initialize client with API key
+client = Groq(api_key="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")
+
+# Create chat completion
+response = client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    messages=[
+        {"role": "user", "content": "Give the Python code for KNN classification using sklearn"}
+    ],
+    temperature=0.7,
+    max_tokens=50   # increased for full code
+)
+
+# Print response
+print(response.choices[0].message.content)
